@@ -64,11 +64,6 @@ namespace Lab4
                 iterations++;
             }
             return population;
-
-            /*for (int i = 0; i < population.Chromosomes.Count; i++)
-            {
-                Console.WriteLine("Chomosome: " + i + "  Weight: " + population.Chromosomes[i].GetWeight + "  Value: " + population.Chromosomes[i].GetValue);
-            }*/
         }
 
         public static Chromosome CrossOver(Chromosome FirstParent,Chromosome SecondParent) 
