@@ -29,9 +29,9 @@ namespace Lab4NUnit
             // Arange 
             Population population = Solver.Solve();
             //Action
-            Chromosome Record = Solver.Record;
+            Chromosome? Record = Solver.Record;
             //Assert
-            Assert.AreNotEqual(Record.GetValue, population.GetTheWorstChromosome.GetValue);
+            Assert.That(Record?.GetValue, Is.Not.EqualTo(population.GetTheWorstChromosome.GetValue));
         }
         [Test]
         public void TestImprovement()

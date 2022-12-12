@@ -10,7 +10,7 @@ namespace Lab4
     {
         public static BackPack backPack = new BackPack();
         static Population population = new Population(backPack);
-        public static Chromosome Record;
+        public static Chromosome? Record;
 
         public static Population Solve()
         {
