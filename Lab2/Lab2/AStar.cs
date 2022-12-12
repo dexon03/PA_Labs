@@ -4,7 +4,7 @@ namespace Lab2;
 
 public static class AStar
 {
-    public static State Solve(State state,out int iterations,out int angles,out int countOfState,out int stateInMemory)
+    public static State? Solve(State state,out int iterations,out int angles,out int countOfState,out int stateInMemory)
     {
         iterations = 0;
         angles = 0;

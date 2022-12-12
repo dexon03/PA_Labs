@@ -24,7 +24,7 @@ public static class LDFS
         }
         if (state.SearchDepth == limit)
         {
-            var listOfAngles = FunctionsAndConstants.GenerateChildren(state.Parent);
+            var listOfAngles = FunctionsAndConstants.GenerateChildren(state.Parent!);
             angles += listOfAngles.Count;
             return null;
         }
@@ -41,7 +41,7 @@ public static class LDFS
         }
         foreach (var child in children)
         {
-            State result = RecursiveLDFS(child, limit,ref iterations,ref angles,ref countOfState);
+            State? result = RecursiveLDFS(child, limit,ref iterations,ref angles,ref countOfState);
             if (result != null)
             {
                 return result;

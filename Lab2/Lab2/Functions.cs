@@ -23,40 +23,24 @@ public static class FunctionsAndConstants
         var rightState = state.MoveBlankToRight(x, y);
         if (rightState != null)
         {
-            rightState.LastMove = "right";
-            rightState.Parent = state;
-            rightState.SearchDepth++;
-            rightState.F = rightState.GetF();
             children.Add(rightState);
         }
 
         var leftState = state.MoveBlankToLeft(x, y);
         if (leftState != null)
         {
-            leftState.LastMove = "left";
-            leftState.Parent = state;
-            leftState.SearchDepth++;
-            leftState.F = leftState.GetF();
             children.Add(leftState);
         }
 
         var downState = state.MoveBlankToDown(x, y);
         if (downState != null)
         {
-            downState.LastMove = "down";
-            downState.Parent = state;
-            downState.SearchDepth++;
-            downState.F = downState.GetF();
             children.Add(downState);
         }
 
         var upState = state.MoveBlankToUp(x, y);
         if (upState != null)
         {
-            upState.LastMove = "up";
-            upState.Parent = state;
-            upState.SearchDepth++;
-            upState.F = upState.GetF();
             children.Add(upState);
         }
         return children;

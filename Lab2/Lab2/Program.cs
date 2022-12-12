@@ -5,7 +5,7 @@ Board board = new Board();
 board.GenerateBoard();
 board.OutPut();
 Console.WriteLine("--------------------------");
-var beginState = new State(board,null,null,0);
+var beginState = new State(board,null!,null!,0);
 int iterations;
 int angles;
 int countOfState;
@@ -15,14 +15,14 @@ Console.Write("Choose algorithm 1 - LDFS, 2 - A* :");
 int var;
 do
 {
-    var = int.Parse(Console.ReadLine());
+    var = int.Parse(Console.ReadLine()!);
     if (var == 1 || var == 2) break;
 } while (true);
 
 if (var == 1)
 {
     Console.Write("Choose limit for LDFS: ");
-    int limit = Int32.Parse(Console.ReadLine());
+    int limit = Int32.Parse(Console.ReadLine()!);
     
     State? state = LDFS.Solve(beginState,limit,out iterations,out angles,out countOfState);
     if (state != null)

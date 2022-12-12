@@ -5,8 +5,8 @@ public class State : IComparable<State>
     private int outOfPlace;
     public int F;
     public Board Board { get; set; }
-    public State Parent { get; set; }
-    public string LastMove { get; set; }
+    public State? Parent { get; set; }
+    public string? LastMove { get; set; }
     public int SearchDepth { get; set; }
 
     public State(Board board,State parent,string lastMove,int searchDepth)
@@ -15,7 +15,7 @@ public class State : IComparable<State>
         this.Parent = parent;
         this.LastMove = lastMove;
         this.SearchDepth = searchDepth;
-        this.F = GetF();
+        this.F = CalcF();
     }
 
     public int OutOfPlace()
@@ -38,58 +38,66 @@ public class State : IComparable<State>
         return this.outOfPlace;
     }
 
-    public int GetF()
+    public int CalcF()
     {
         this.outOfPlace = OutOfPlace();
         return this.SearchDepth + this.outOfPlace;
     }
-    public State MoveBlankToLeft(int i,int j) 
+    public State? MoveBlankToLeft(int i,int j) 
     {
-        if (j == 0)
+        if (j == 0 || this.LastMove == "right")
         {
             return null;
         }
 
-        if (this.LastMove == "right") return null;
         var newState = this.Clone();
         (newState.Board.Matrix[i, j - 1], newState.Board.Matrix[i, j]) = (newState.Board.Matrix[i, j], newState.Board.Matrix[i, j - 1]);
-        newState.F = GetF();
+        newState.LastMove = "left";
+        newState.Parent = this;
+        newState.SearchDepth++;
+        newState.F = newState.CalcF();
         return newState;
     }
-    public State MoveBlankToRight(int i,int j) 
+    public State? MoveBlankToRight(int i,int j) 
     {
-        if (j == 2)
+        if (j == 2 || this.LastMove == "left")
         {
             return null;
         }
-        if (this.LastMove == "left") return null;
         var newState = this.Clone();
         (newState.Board.Matrix[i, j + 1], newState.Board.Matrix[i, j]) = (newState.Board.Matrix[i, j], newState.Board.Matrix[i, j + 1]);
-        newState.F = GetF();
+        newState.LastMove = "right";
+        newState.Parent = this;
+        newState.SearchDepth++;
+        newState.F = newState.CalcF();
         return newState;
     }
-    public State MoveBlankToUp(int i,int j) 
+    public State? MoveBlankToUp(int i,int j) 
     {
-        if (i == 0)
+        if (i == 0 || this.LastMove == "down")
         {
             return null;
         }
-        if (this.LastMove == "down") return null;
         var newState = this.Clone();
         (newState.Board.Matrix[i-1, j], newState.Board.Matrix[i, j]) = (newState.Board.Matrix[i, j], newState.Board.Matrix[i-1, j]);
-        newState.F = GetF();
+        newState.LastMove = "up";
+        newState.Parent = this;
+        newState.SearchDepth++;
+        newState.F = newState.CalcF();
         return newState;
     }
-    public State MoveBlankToDown(int i,int j) 
+    public State? MoveBlankToDown(int i,int j) 
     {
-        if (i == 2)
+        if (i == 2 || this.LastMove == "up")
         {
             return null;
         }
-        if (this.LastMove == "up") return null;
         var newState = this.Clone();
         (newState.Board.Matrix[i+1, j], newState.Board.Matrix[i, j]) = (newState.Board.Matrix[i, j], newState.Board.Matrix[i+1, j]);
-        newState.F = GetF();
+        newState.LastMove = "down";
+        newState.Parent = this;
+        newState.SearchDepth++;
+        newState.F = newState.CalcF();
         return newState;
     }
 
@@ -105,13 +113,13 @@ public class State : IComparable<State>
         }
 
         Board newBoard = new Board(newMatrix);
-        return new State(newBoard, this.Parent, this.LastMove, this.SearchDepth);
+        return new State(newBoard, this.Parent!, this.LastMove!, this.SearchDepth);
     }
 
-    public int CompareTo(State obj)
+    public int CompareTo(State? obj)
     {
         int current = this.outOfPlace;
-        int comparableObj = obj.outOfPlace;
+        int? comparableObj = obj?.outOfPlace;
         if (current < comparableObj) return 1;
         if (current > comparableObj) return -1;
         return 0;

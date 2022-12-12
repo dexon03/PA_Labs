@@ -16,15 +16,14 @@ public class Tests
             {2, 3, 6},
         };
         Board board = new Board(arr);
-        var beginState = new State(board,null,null,0);
+        var beginState = new State(board,null!,null!,0);
         int iterations;
         int angles;
         int countOfState;
-        int stateInMemory;
         //Action
         State? state = LDFS.Solve(beginState,22,out iterations,out angles,out countOfState);
         //Assert
-        Assert.AreEqual(state, null);
+        Assert.That(state, Is.EqualTo(null));
     }
     //LimitDepth = 30;
     [Test]
@@ -38,15 +37,14 @@ public class Tests
             {9, 2, 7},
          };
         Board board = new Board(arr);
-        var beginState = new State(board, null, null, 0);
+        var beginState = new State(board, null!, null!, 0);
         int iterations;
         int angles;
         int countOfState;
-        int stateInMemory;
         //Action
         State? state = LDFS.Solve(beginState, 30, out iterations, out angles, out countOfState);
         //Assert
-        Assert.AreEqual(state.Board.Matrix, FunctionsAndConstants.goalState);
+        Assert.That(FunctionsAndConstants.goalState, Is.EqualTo(state?.Board.Matrix));
     }
     [Test]
     public void TestNegativeResultAStar()
@@ -59,7 +57,7 @@ public class Tests
             {6, 8, 3},
         };
         Board board = new Board(arr);
-        var beginState = new State(board, null, null, 0);
+        var beginState = new State(board, null!, null!, 0);
         int iterations;
         int angles;
         int countOfState;
@@ -67,7 +65,7 @@ public class Tests
         //Action
         State? state = AStar.Solve(beginState, out iterations, out angles, out countOfState,out stateInMemory);
         //Assert
-        Assert.AreEqual(state, null);
+        Assert.That(state, Is.EqualTo(null));
     }
     [Test]
     public void TestPositiveResultAStar()
@@ -81,7 +79,7 @@ public class Tests
         };
         Board board = new Board(arr);
         //board.GenerateBoard();
-        var beginState = new State(board, null, null, 0);
+        var beginState = new State(board, null!, null!, 0);
         int iterations;
         int angles;
         int countOfState;
@@ -89,7 +87,7 @@ public class Tests
         //Action
         State? state = AStar.Solve(beginState, out iterations, out angles, out countOfState, out stateInMemory);
         //Assert
-        Assert.AreEqual(state.Board.Matrix, FunctionsAndConstants.goalState);
+        Assert.That(FunctionsAndConstants.goalState, Is.EqualTo(state.Board.Matrix));
 
     }
 }
