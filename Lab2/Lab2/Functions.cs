@@ -2,19 +2,23 @@
 
 public static class FunctionsAndConstants
 {
-    public static int[,] goalState = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }; 
+    public static readonly int[,] goalState = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }; 
     public static List<State> FindPath(State state)
     {
         var result = new List<State>();
-        while (state.Parent != null)
-        {
-            result.Add(state);
-            state = state.Parent;
-        }
-
+        result.Add(state);
+        AddStatesToPath(result,state);
         return result;
     }
 
+    private static void AddStatesToPath(List<State> pathList,State state)
+    {
+        if (state.Parent != null)
+        {
+            pathList.Add(state.Parent);
+            AddStatesToPath(pathList,state.Parent);
+        }   
+    }
     public static List<State> GenerateChildren(State state)
     {
         (int x, int y) = state.Board.IndexOfBlank();

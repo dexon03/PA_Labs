@@ -11,6 +11,7 @@ int angles;
 int countOfState;
 int stateInMemory;
 
+
 Console.Write("Choose algorithm 1 - LDFS, 2 - A* :");
 int var;
 do
@@ -19,7 +20,22 @@ do
     if (var == 1 || var == 2) break;
 } while (true);
 
+
 if (var == 1)
+{
+    DoLDFSAlgo();
+}
+else
+{ 
+   DoAStarAlgo();
+}
+
+
+
+
+
+
+void DoLDFSAlgo()
 {
     Console.Write("Choose limit for LDFS: ");
     int limit = Int32.Parse(Console.ReadLine()!);
@@ -39,8 +55,11 @@ if (var == 1)
     Console.WriteLine("Count of angles: " + angles);
     Console.WriteLine("Count of states: " + countOfState);
 }
-else
-{ 
+
+
+
+void DoAStarAlgo()
+{
     State? state = AStar.Solve(beginState,out iterations,out angles,out countOfState,out stateInMemory);
     if (state != null)
     {
