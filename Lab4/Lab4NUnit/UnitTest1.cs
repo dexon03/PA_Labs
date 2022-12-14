@@ -31,7 +31,7 @@ namespace Lab4NUnit
             //Action
             Chromosome? Record = Solver.Record;
             //Assert
-            Assert.That(Record?.GetValue, Is.Not.EqualTo(population.GetTheWorstChromosome.GetValue));
+            Assert.That(Record?.GetValue, Is.Not.EqualTo(population.GetTheWorstChromosome().GetValue));
         }
         [Test]
         public void TestImprovement()
@@ -41,10 +41,10 @@ namespace Lab4NUnit
             Population population = new Population(backPack);
             population.GeneratePopulation();
 
-            Chromosome FirstParent = population.GetBestChromosome;
+            Chromosome FirstParent = population.GetBestChromosome();
             Chromosome SecondParent;
             while (true)
-             {
+            {
                 Random random = new Random();
                 int index = random.Next(0, 100);
                 if (population.Chromosomes[index] != FirstParent)
@@ -70,7 +70,7 @@ namespace Lab4NUnit
             Population population = new Population(backPack);
             population.GeneratePopulation();
 
-            Chromosome FirstParent = population.GetBestChromosome;
+            Chromosome FirstParent = population.GetBestChromosome();
             Chromosome SecondParent;
             while (true)
             {

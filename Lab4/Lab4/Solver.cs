@@ -15,11 +15,11 @@ namespace Lab4
         public static Population Solve()
         {
             population.GeneratePopulation();
-            Record = population.GetTheWorstChromosome;
+            Record = population.GetTheWorstChromosome();
             int iterations = 0;
             while (iterations <= 1000)
             {
-                Chromosome FirstParent = population.GetBestChromosome;
+                Chromosome FirstParent = population.GetBestChromosome();
                 Chromosome SecondParent;
                 while (true)
                 {
@@ -36,9 +36,9 @@ namespace Lab4
                 Chromosome improved = LocalImprovement(mutation);
                 if(improved.GetValue > Record.GetValue)
                 {
-                    Record= improved;
+                    Record = improved;
                 }
-                Chromosome worstChromo = population.GetTheWorstChromosome;
+                Chromosome worstChromo = population.GetTheWorstChromosome();
                 if (improved.GetWeight <= backPack.Capacity)
                 {
                     

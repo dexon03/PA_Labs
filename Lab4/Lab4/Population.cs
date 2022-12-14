@@ -25,10 +25,8 @@ namespace Lab4
                 Chromosomes[i].Gene[i] = 1;
             }
         }
-        public Chromosome GetBestChromosome
+        public Chromosome GetBestChromosome()
         {
-            get
-            {
                 int MaxValue = Int32.MinValue;
                 int MaxIndex = -1;
                 for (int i = 0; i < Chromosomes.Count; i++)
@@ -40,15 +38,11 @@ namespace Lab4
                         MaxIndex = i;
                     }
                 }
-
                 return Chromosomes[MaxIndex];
-            }
         }
 
-        public Chromosome GetTheWorstChromosome
+        public Chromosome GetTheWorstChromosome()
         {
-            get
-            {
                 int MinValue = Int32.MaxValue;
                 int MinIndex = -1;
                 for (int i = 0; i < Chromosomes.Count; i++)
@@ -60,11 +54,8 @@ namespace Lab4
                         MinIndex = i;
                     }
                 }
-
                 return Chromosomes[MinIndex];
-            }
+            
         }
-        
-
     }
 }
