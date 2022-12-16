@@ -55,7 +55,7 @@ namespace Lab4
             return population;
         }
 
-        private static  (Chromosome, Chromosome) GetParents()
+        public static  (Chromosome, Chromosome) GetParents()
         {
             Chromosome FirstParent = population.GetBestChromosome();
             Chromosome SecondParent;
