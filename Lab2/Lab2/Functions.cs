@@ -3,7 +3,7 @@
 public static class FunctionsAndConstants
 {
     public static readonly int[,] goalState = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }; 
-    public static List<State> FindPath(State state)
+    public static List<State> GetPath(State state)
     {
         var result = new List<State>();
         result.Add(state);
@@ -24,25 +24,25 @@ public static class FunctionsAndConstants
         (int x, int y) = state.Board.IndexOfBlank();
         var children = new List<State>();
 
-        var rightState = state.MoveBlankToRight(x, y);
+        var rightState = state.MoveBlankToRightState(x, y);
         if (rightState != null)
         {
             children.Add(rightState);
         }
 
-        var leftState = state.MoveBlankToLeft(x, y);
+        var leftState = state.MoveBlankToLeftState(x, y);
         if (leftState != null)
         {
             children.Add(leftState);
         }
 
-        var downState = state.MoveBlankToDown(x, y);
+        var downState = state.MoveBlankToDownState(x, y);
         if (downState != null)
         {
             children.Add(downState);
         }
 
-        var upState = state.MoveBlankToUp(x, y);
+        var upState = state.MoveBlankToUpState(x, y);
         if (upState != null)
         {
             children.Add(upState);

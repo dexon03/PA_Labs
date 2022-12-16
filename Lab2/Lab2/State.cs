@@ -15,7 +15,7 @@ public class State : IComparable<State>
         this.Parent = parent;
         this.LastMove = lastMove;
         this.SearchDepth = searchDepth;
-        this.F = CalcF();
+        this.F = CalculateF();
     }
 
     public int OutOfPlace()
@@ -38,12 +38,12 @@ public class State : IComparable<State>
         return this.outOfPlace;
     }
 
-    public int CalcF()
+    public int CalculateF()
     {
-        this.outOfPlace = OutOfPlace();
-        return this.SearchDepth + this.outOfPlace;
+        outOfPlace = OutOfPlace();
+        return SearchDepth + outOfPlace;
     }
-    public State? MoveBlankToLeft(int i,int j) 
+    public State? MoveBlankToLeftState(int i,int j) 
     {
         if (j == 0 || this.LastMove == "right")
         {
@@ -55,10 +55,10 @@ public class State : IComparable<State>
         newState.LastMove = "left";
         newState.Parent = this;
         newState.SearchDepth++;
-        newState.F = newState.CalcF();
+        newState.F = newState.CalculateF();
         return newState;
     }
-    public State? MoveBlankToRight(int i,int j) 
+    public State? MoveBlankToRightState(int i,int j) 
     {
         if (j == 2 || this.LastMove == "left")
         {
@@ -69,10 +69,10 @@ public class State : IComparable<State>
         newState.LastMove = "right";
         newState.Parent = this;
         newState.SearchDepth++;
-        newState.F = newState.CalcF();
+        newState.F = newState.CalculateF();
         return newState;
     }
-    public State? MoveBlankToUp(int i,int j) 
+    public State? MoveBlankToUpState(int i,int j) 
     {
         if (i == 0 || this.LastMove == "down")
         {
@@ -83,10 +83,10 @@ public class State : IComparable<State>
         newState.LastMove = "up";
         newState.Parent = this;
         newState.SearchDepth++;
-        newState.F = newState.CalcF();
+        newState.F = newState.CalculateF();
         return newState;
     }
-    public State? MoveBlankToDown(int i,int j) 
+    public State? MoveBlankToDownState(int i,int j) 
     {
         if (i == 2 || this.LastMove == "up")
         {
@@ -97,11 +97,11 @@ public class State : IComparable<State>
         newState.LastMove = "down";
         newState.Parent = this;
         newState.SearchDepth++;
-        newState.F = newState.CalcF();
+        newState.F = newState.CalculateF();
         return newState;
     }
 
-    public State Clone()
+    private State Clone()
     {
         int[,] newMatrix = new int[3, 3];
         for (int i = 0; i < this.Board.Matrix.GetLength(0); i++)

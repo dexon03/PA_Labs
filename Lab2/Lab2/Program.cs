@@ -44,7 +44,7 @@ void DoLDFSAlgo()
     if (state != null)
     {
         state.Board.OutPut();
-        var path = FunctionsAndConstants.FindPath(state);
+        var path = FunctionsAndConstants.GetPath(state);
         Console.WriteLine("Count of states in memory: " + path.Count);
     }
     else

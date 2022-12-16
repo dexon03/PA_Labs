@@ -38,21 +38,33 @@ public static class AStar
                     countOfState++;
                 }
             }
-            long memoryUsed = Process.GetCurrentProcess().PrivateMemorySize64/1000000000;
-            if (memoryUsed > 1)
+
+            if (!CheckStopCondition(data1))
             {
-                Console.WriteLine("Memory used is out of available");
-                return null;
-            }
-            DateTime data2 = DateTime.Now;
-            if ((data2 - data1).Minutes == 1)
-            {
-                Console.WriteLine("Timeout");
                 stateInMemory = OpenList.Count;
                 return null;
             }
+            
         }
         stateInMemory = OpenList.Count;
         return null;
+    }
+
+    private static bool CheckStopCondition(DateTime data1)
+    {
+        long memoryUsed = Process.GetCurrentProcess().PrivateMemorySize64/1000000000;
+        if (memoryUsed > 1)
+        {
+            Console.WriteLine("Memory used is out of available");
+            return false;
+        }
+        DateTime data2 = DateTime.Now;
+        if ((data2 - data1).Minutes == 1)
+        {
+            Console.WriteLine("Timeout");
+            return false;
+        }
+
+        return true;
     }
 }
