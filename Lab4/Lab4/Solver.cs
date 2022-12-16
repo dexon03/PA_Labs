@@ -19,27 +19,16 @@ namespace Lab4
             int iterations = 0;
             while (iterations <= 1000)
             {
-                Chromosome FirstParent = population.GetBestChromosome();
-                Chromosome SecondParent;
-                while (true)
-                {
-                    Random random  = new Random();
-                    int index = random.Next(0, 100);
-                    if (population.Chromosomes[index] != FirstParent)
-                    {
-                        SecondParent = population.Chromosomes[index];
-                        break;
-                    }
-                }
+                (Chromosome FirstParent, Chromosome SecondParent) = GetParents();
                 Chromosome Offspring = CrossOver(FirstParent, SecondParent);
                 Chromosome mutation = Mutation(Offspring);
                 Chromosome improved = LocalImprovement(mutation);
-                if(improved.GetValue > Record.GetValue)
+                if(improved.GetValue() > Record.GetValue())
                 {
                     Record = improved;
                 }
                 Chromosome worstChromo = population.GetTheWorstChromosome();
-                if (improved.GetWeight <= backPack.Capacity)
+                if (improved.GetWeight() <= backPack.Capacity)
                 {
                     
                     population.Chromosomes.Remove(worstChromo);
@@ -47,7 +36,7 @@ namespace Lab4
                 }
                 else
                 {
-                    if(Offspring.GetWeight <= backPack.Capacity)
+                    if(Offspring.GetWeight() <= backPack.Capacity)
                     {
                         population.Chromosomes.Remove(worstChromo);
                         population.Chromosomes.Add(Offspring);
@@ -59,11 +48,29 @@ namespace Lab4
                 }
                 if(iterations%20==0)
                 {
-                    WriteRecordToFile(iterations, Record.GetValue);
+                    WriteRecordToFile(iterations, Record.GetValue());
                 }
                 iterations++;
             }
             return population;
+        }
+
+        private static  (Chromosome, Chromosome) GetParents()
+        {
+            Chromosome FirstParent = population.GetBestChromosome();
+            Chromosome SecondParent;
+            while (true)
+            {
+                Random random  = new Random();
+                int index = random.Next(0, 100);
+                if (population.Chromosomes[index] != FirstParent)
+                {
+                    SecondParent = population.Chromosomes[index];
+                    break;
+                }
+            }
+
+            return (FirstParent, SecondParent);
         }
 
         public static Chromosome CrossOver(Chromosome FirstParent,Chromosome SecondParent) 
@@ -88,35 +95,37 @@ namespace Lab4
 
         public static Chromosome Mutation(Chromosome chromosome)
         {
+            Chromosome mutation = new Chromosome(chromosome.Gene);
             Random random = new Random();
             int chance = random.Next(1, 101);
             if(chance <= 5)
             {
-                int index_1 = random.Next(0, chromosome.Gene.Count);
+                int index_1 = random.Next(0, mutation.Gene.Count);
                 int index_2;
                 while (true)
                 {
-                    index_2 = random.Next(0, chromosome.Gene.Count);
+                    index_2 = random.Next(0, mutation.Gene.Count);
                     if (index_2 != index_1) break;
                 }
-                (chromosome.Gene[index_1], chromosome.Gene[index_2]) = (chromosome.Gene[index_2], chromosome.Gene[index_1]);
+                (mutation.Gene[index_1], mutation.Gene[index_2]) = (mutation.Gene[index_2], mutation.Gene[index_1]);
             }
-            return chromosome;
+            return mutation;
         }
 
         public static Chromosome LocalImprovement(Chromosome chromosome)
         {
+            Chromosome improved = new Chromosome(chromosome.Gene);
             Random random = new Random();
             while (true)
             {
-                int index = random.Next(0,chromosome.Gene.Count);
-                if (chromosome.Gene[index] == 0)
+                int index = random.Next(0,improved.Gene.Count);
+                if (improved.Gene[index] == 0)
                 {
-                    chromosome.Gene[index] = 1;
+                    improved.Gene[index] = 1;
                     break;
                 }
             }
-            return chromosome;
+            return improved;
         }
         private static void WriteRecordToFile(int iteration,int value)
         {

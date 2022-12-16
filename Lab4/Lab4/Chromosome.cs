@@ -15,12 +15,12 @@
 
         public Chromosome(List<int> gene)
         {
-            Gene = gene;
+            Gene = new List<int>();
+            Gene.AddRange(gene);
         }
 
-        public int GetWeight { 
-            get
-            {
+        public int GetWeight() 
+        { 
                 int result = 0;
                 for (int i = 0; i < Gene.Count; i++)
                 {
@@ -30,14 +30,11 @@
                     }
                 }
                 return result;
-            }
         }
 
 
-        public int GetValue
+        public int GetValue()
         {
-            get
-            {
                 int result = 0;
                 for (int i = 0; i < Gene.Count; i++)
                 {
@@ -47,7 +44,6 @@
                     }
                 }
                 return result;
-            }
         }
 
     }

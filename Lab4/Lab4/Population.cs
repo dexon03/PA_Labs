@@ -31,7 +31,7 @@ namespace Lab4
                 int MaxIndex = -1;
                 for (int i = 0; i < Chromosomes.Count; i++)
                 {
-                    int currentValue = Chromosomes[i].GetValue;
+                    int currentValue = Chromosomes[i].GetValue();
                     if (MaxValue <= currentValue)
                     {
                         MaxValue = currentValue;
@@ -47,7 +47,7 @@ namespace Lab4
                 int MinIndex = -1;
                 for (int i = 0; i < Chromosomes.Count; i++)
                 {
-                    int currentValue = Chromosomes[i].GetValue;
+                    int currentValue = Chromosomes[i].GetValue();
                     if (MinValue >= currentValue)
                     {
                         MinValue = currentValue;
@@ -55,7 +55,6 @@ namespace Lab4
                     }
                 }
                 return Chromosomes[MinIndex];
-            
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Lab4NUnit
             int MaxWeight = int.MinValue;
             foreach (var item in population.Chromosomes)
             {
-                MaxWeight = Math.Max(MaxWeight, item.GetWeight);
+                MaxWeight = Math.Max(MaxWeight, item.GetWeight());
             }
             //Assert
             Assert.LessOrEqual(MaxWeight, 250);
@@ -31,7 +31,7 @@ namespace Lab4NUnit
             //Action
             Chromosome? Record = Solver.Record;
             //Assert
-            Assert.That(Record?.GetValue, Is.Not.EqualTo(population.GetTheWorstChromosome().GetValue));
+            Assert.That(Record?.GetValue(), Is.Not.EqualTo(population.GetTheWorstChromosome().GetValue()));
         }
         [Test]
         public void TestImprovement()
@@ -55,10 +55,10 @@ namespace Lab4NUnit
             }
             Chromosome Offspring = Solver.CrossOver(FirstParent, SecondParent);
             Chromosome mutation = Solver.Mutation(Offspring);
-            int ChromosomeValueBeforeImprovement = mutation.GetValue;
+            int ChromosomeValueBeforeImprovement = mutation.GetValue();
             //Action
             Chromosome improvement = Solver.LocalImprovement(mutation);
-            int ChromosomeValueAfterImprovement = improvement.GetValue;
+            int ChromosomeValueAfterImprovement = improvement.GetValue();
             //Assert
             Assert.Greater(ChromosomeValueAfterImprovement, ChromosomeValueBeforeImprovement);
         }
