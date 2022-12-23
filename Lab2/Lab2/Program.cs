@@ -12,16 +12,17 @@ int countOfState;
 int stateInMemory;
 
 
-Console.Write("Choose algorithm 1 - LDFS, 2 - A* :");
-int var;
+
+string var;
 do
 {
-    var = int.Parse(Console.ReadLine()!);
-    if (var == 1 || var == 2) break;
+    Console.Write("Choose algorithm 1 - LDFS, 2 - A* :");
+    var = string.Join("",Console.ReadLine().Split(" "));
+    if (var == "1" || var == "2") break;
 } while (true);
 
 
-if (var == 1)
+if (var == "1")
 {
     DoLDFSAlgo();
 }
