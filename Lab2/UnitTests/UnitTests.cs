@@ -87,7 +87,7 @@ public class Tests
         //Action
         State? state = AStar.Solve(beginState, out iterations, out angles, out countOfState, out stateInMemory);
         //Assert
-        Assert.That(FunctionsAndConstants.goalState, Is.EqualTo(state.Board.Matrix));
+        Assert.That(FunctionsAndConstants.goalState, Is.EqualTo(state!.Board.Matrix));
 
     }
 }
