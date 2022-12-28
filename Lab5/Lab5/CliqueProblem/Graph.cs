@@ -2,51 +2,52 @@
 
 public class Graph
 {
-    public List<List<int>> Vertexes { get; }
+    public List<Node> Nodes { get; } = new List<Node>();
 
-    public Graph(int count)
+    public Graph(int count, int NodeDegreeCount)
     {
-        Vertexes = new List<List<int>>(count);
+        Nodes = new List<Node>(count);
         for (int i = 0; i < count; i++)
         {
-            Vertexes.Add(new List<int>());
+            Nodes.Add(new Node(i));
         }
+        GenerateConnections(NodeDegreeCount);
     }
 
-    public void GenerateGraph()
+    private void GenerateConnections(int NodeDegreeCount)
     {
-        int n, m;
-        while (!CheckProp())
+        var avgNodeDegree = NodeDegreeCount / 2;
+        var avgEdgeCount = avgNodeDegree * Nodes.Count;
+        
+        int counter = 0;
+        Random random = new Random();
+        while (counter < avgEdgeCount)
         {
-            Random random = new Random();
-            n = random.Next(0,300);
-            do
+            var node1 = Nodes[random.Next(Nodes.Count)];
+            var node2 = Nodes[random.Next(Nodes.Count)];
+            
+            if (node1 == node2)
+                continue;
+            if (!node1.IsConnected(node2))
             {
-                m = random.Next(0, 300);
-            } while (m == n);
-            AddEdge(n,m);
+                node1.Connect(node2);
+            }
+            counter++;
         }
     }
 
-    private void AddEdge(int u, int v)
+    public bool isClique()
     {
-        if (!Vertexes[u].Contains(v))
+        foreach (var node in Nodes)
         {
-            Vertexes[u].Add(v);
-            Vertexes[v].Add(u);
-        }    
+            if(node.Connections.Count != Nodes.Count - 1)
+                return false;
+        }
+        return true;
     }
     
-    private bool CheckProp()
+    public int fitness()
     {
-        foreach (var vertex in Vertexes)
-        {
-            if (vertex.Count is < 2 or > 30)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return Nodes.Count * Convert.ToInt32(isClique());
     }
 }
