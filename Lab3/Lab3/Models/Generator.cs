@@ -13,7 +13,7 @@ public static class SeedData
         {
             for (int i = 0; i < 10000; i++)
             {
-                dbContext.NodeValues?.Add(new NodeValue{NodeValueId = i, Value = Guid.NewGuid().ToString()});
+                dbContext.NodeValues?.Add(new NodeValue{NodeValueId = i+1, Value = Guid.NewGuid().ToString()});
             }
         }
         dbContext.SaveChanges();
