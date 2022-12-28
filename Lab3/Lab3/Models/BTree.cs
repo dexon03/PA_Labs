@@ -5,16 +5,17 @@ namespace Lab3.Models;
 public class BTree
 {
     private int Degree { get; set; } = 50;
-    public Node Root { get; set; } = new (50);
+    public Node? Root { get; set; } = new (50);
 
+    // ReSharper disable once InconsistentNaming
     public BTree(IServiceScopeFactory _serviceScopeFactory)
     {
         using (var scope = _serviceScopeFactory.CreateScope())
         {
-            ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            if (dbContext.NodeValues.Any())
+            ApplicationDbContext? dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            if (dbContext!.NodeValues!.Any())
             {
-                foreach (var node in dbContext.NodeValues)
+                foreach (var node in dbContext.NodeValues!)
                 {
                     BTreeInsert(node); 
                 }
@@ -24,7 +25,7 @@ public class BTree
 
     public NodeValue? BTreeSearch(int key,ref int countOfComparsion)
     {
-        var node = SearchNode(Root, key, ref countOfComparsion);
+        var node = SearchNode(Root!, key, ref countOfComparsion);
         if (node is null) return null;
         return BinarySearch(node.NodeValues, key, ref countOfComparsion);
     }
@@ -65,18 +66,18 @@ public class BTree
 
     public void BTreeInsert(NodeValue node)
     {
-        if (this.Root.HasReachedMaxCountOfKeys)
+        if (this.Root!.HasReachedMaxCountOfKeys)
         {
             Node oldRoot = this.Root;
             this.Root = new Node(this.Degree);
             this.Root.Children.Add(oldRoot);
             this.Root.Children[this.Root.Children.IndexOf(oldRoot)].Parent = this.Root;
             this.SplitChild(this.Root,0,oldRoot);
-            this.InsertNotFull(this.Root,node.NodeValueId,node.Value);
+            this.InsertNotFull(this.Root,node.NodeValueId,node.Value!);
         }
         else
         {
-            this.InsertNotFull(this.Root,node.NodeValueId,node.Value);
+            this.InsertNotFull(this.Root,node.NodeValueId,node.Value!);
         }
     }
 
@@ -101,7 +102,7 @@ public class BTree
 
     private void InsertNotFull(Node node, int id, string value)
     {
-        int indexForInsert = node.NodeValues.TakeWhile(node => id.CompareTo(node.NodeValueId) >= 0).Count();
+        int indexForInsert = node.NodeValues.TakeWhile(nodeValue => id.CompareTo(nodeValue.NodeValueId) >= 0).Count();
         if (node.IsLeaf)
         {
             node.NodeValues.Insert(indexForInsert,new NodeValue(){NodeValueId = id,Value = value});
@@ -121,13 +122,13 @@ public class BTree
     public List<NodeValue> ToList()
     {
         var nodes = new List<NodeValue>();
-        ToList(this.Root, nodes);
+        ToList(this.Root!, nodes);
         return nodes;
     }
 
     private void ToList(Node node, List<NodeValue> nodes)
     {
-        int i = 0;
+        int i;
         for (i = 0; i < node.NodeValues.Count; i++)
         {
             if (!node.IsLeaf)
@@ -146,8 +147,8 @@ public class BTree
     public void DeleteNode(int key)
     {
         int countOfComparsion = 0;
-        var node = SearchNode(Root, key,ref countOfComparsion);
-        if (node.IsLeaf)
+        var node = SearchNode(Root!, key,ref countOfComparsion);
+        if (node!.IsLeaf)
         {
             RemoveNodeFromLeaf(node,key);
         }
@@ -162,7 +163,7 @@ public class BTree
     {
         int countOfComparsion = 0;
         var nodeValueForRemove = BinarySearch(node.NodeValues, key,ref countOfComparsion);
-        node.NodeValues.Remove(nodeValueForRemove);
+        node.NodeValues.Remove(nodeValueForRemove!);
         RestorePropertyDelete(node);
     }
 
@@ -180,7 +181,7 @@ public class BTree
         else
         {
             var rightChild = leftChild.rightSibling;
-            var successor = GetSuccessor(rightChild);
+            var successor = GetSuccessor(rightChild!);
             var successorKey = successor.NodeValues[0];
             node.ReplaceValueByKey(key,successorKey);
             RemoveNodeFromLeaf(successor,successorKey.NodeValueId);
@@ -205,7 +206,7 @@ public class BTree
             else if (!BorrowLeft(node) && !BorrowRight(node))
             {
                 Merge(node);
-                RestorePropertyDelete(node.Parent);
+                RestorePropertyDelete(node.Parent!);
             }            
         }
     }
@@ -235,7 +236,7 @@ public class BTree
         if (left != null && left.NodeValues.Count > Degree - 1)
         {
             var sibKey = left.ExtractLastKey();
-            var parentKey = parent.FindKeyByChild(left);
+            var parentKey = parent!.FindKeyByChild(left);
             parent.ReplaceValueByKey(parentKey.NodeValueId,sibKey);
             node.NodeValues.Insert(0,parentKey);
             if (!left.IsLeaf)
@@ -256,7 +257,7 @@ public class BTree
         if (right != null && right.NodeValues.Count > Degree - 1)
         {
             var sibKey = right.ExtractFirstKey();
-            var parentKey = parent.FindKeyByChild(right);
+            var parentKey = parent!.FindKeyByChild(right);
             parent.ReplaceValueByKey(parentKey.NodeValueId,sibKey); 
             node.NodeValues.Add(parentKey);
             if (!right.IsLeaf)
@@ -276,7 +277,7 @@ public class BTree
         var parent = node.Parent;
         if (left != null)
         {
-            var parentKey = parent.FindKeyByChild(left);
+            var parentKey = parent!.FindKeyByChild(left);
             parent.NodeValues.Remove(parentKey);
             node.Children.InsertRange(0,left.Children);
             for (int i = 0; i < left.Children.Count; i++)
@@ -290,9 +291,9 @@ public class BTree
         else
         {
             var right = node.rightSibling;
-            var parentKey = parent.FindKeyByChild(node);
+            var parentKey = parent!.FindKeyByChild(node);
             parent.NodeValues.Remove(parentKey);
-            node.Children.AddRange(right.Children);
+            node.Children.AddRange(right!.Children);
             foreach (var child in node.Children)
             {
                 child.Parent = node;
@@ -307,8 +308,8 @@ public class BTree
     public void Edit(NodeValue nodeValue)
     {
         int countOfComparsion = 0;
-        var node = SearchNode(Root, nodeValue.NodeValueId, ref countOfComparsion);
-        var nodeForEdit = BinarySearch(node.NodeValues, nodeValue.NodeValueId,ref countOfComparsion);
+        var node = SearchNode(Root!, nodeValue.NodeValueId, ref countOfComparsion);
+        var nodeForEdit = BinarySearch(node!.NodeValues, nodeValue.NodeValueId,ref countOfComparsion);
         if (nodeForEdit != null) nodeForEdit.Value = nodeValue.Value;
     }
 }

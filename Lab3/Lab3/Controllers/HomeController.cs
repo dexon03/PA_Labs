@@ -7,7 +7,7 @@ namespace Lab3.Controllers;
 
 public class HomeController : Controller
 {
-    private ApplicationDbContext _dbContext;
+    private readonly ApplicationDbContext _dbContext;
     private BTree _bTree;
     public HomeController(ApplicationDbContext db,BTree bTree)
     {
@@ -43,11 +43,11 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult SearchNode(NodeValue node)
     {
-        int _countOfComparsion = 0;
-        var result = _bTree.BTreeSearch(node.NodeValueId, ref _countOfComparsion);
+        int countOfComparsion = 0;
+        var result = _bTree.BTreeSearch(node.NodeValueId, ref countOfComparsion);
         if (result != null)
         {
-            ViewBag.CountOfComparsion = _countOfComparsion;
+            ViewBag.CountOfComparsion = countOfComparsion;
             
             return View(result);
         }
@@ -76,8 +76,8 @@ public class HomeController : Controller
     
     public IActionResult SaveToDb()
     {
-        _dbContext.NodeValues.RemoveRange(_dbContext.NodeValues);
-        _dbContext.NodeValues.AddRange(_bTree.ToList());
+        _dbContext.NodeValues?.Clear();
+        _dbContext.NodeValues?.AddRange(_bTree.ToList());
         _dbContext.SaveChanges();
         return RedirectToAction(nameof(Index));
     }

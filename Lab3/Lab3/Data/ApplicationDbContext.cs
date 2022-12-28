@@ -1,16 +1,30 @@
-﻿using Lab3.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using Lab3.Models;
 
 namespace Lab3.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext
 {
-
+    public List<NodeValue>? NodeValues { get; set; } = new List<NodeValue>();
+    private readonly string _path = Environment.CurrentDirectory + "DB.json";
     
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    public ApplicationDbContext()
     {
-        //Database.EnsureDeleted();
-        Database.EnsureCreated();
+        using FileStream file = new FileStream(_path, FileMode.OpenOrCreate);
+        if (file.Length != 0)
+        {
+            NodeValues = JsonSerializer.Deserialize<List<NodeValue>>(file);
+        }
     }
-    public DbSet<NodeValue> NodeValues { get; set; }
+    
+    
+
+    public void SaveChanges()
+    {
+        using (FileStream file = new FileStream(_path, FileMode.Create)) 
+        {
+            JsonSerializer.Serialize(file, NodeValues);
+        }
+    }
+
 }

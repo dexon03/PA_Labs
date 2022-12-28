@@ -3,5 +3,5 @@
 public class NodeValue
 {
     public int NodeValueId { get; set; }
-    public string Value { get; set; }
+    public string? Value { get; set; }
 }
