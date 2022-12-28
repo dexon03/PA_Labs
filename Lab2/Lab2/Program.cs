@@ -144,6 +144,7 @@ void DoLDFSAlgo()
     State? state = LDFS.Solve(beginState,limit,out iterations,out angles,out countOfState);
     if (state != null)
     {
+        Console.WriteLine("Solution:");
         state.Board.OutPut();
         var path = FunctionsAndConstants.GetPath(state);
         Console.WriteLine("Global count of states created during algorithm: " + path.Count);
@@ -169,6 +170,7 @@ void DoAStarAlgo()
     State? state = AStar.Solve(beginState,out iterations,out angles,out countOfState,out stateInMemory);
     if (state != null)
     {
+        Console.WriteLine("Solution:");
         state.Board.OutPut();
     }
     else
