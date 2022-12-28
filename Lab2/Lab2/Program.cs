@@ -6,6 +6,7 @@ ShowMenu();
 string? option;
 do
 {
+    Console.Write("\n Your variant: ");
     option = Console.ReadLine()!;
 
     option = String.Join("", option.Split())!;
@@ -31,7 +32,7 @@ do
             board = new Board(arr);
             break;
         default:
-            Console.WriteLine("Invalid option");
+            Console.WriteLine("Invalid option. Try 1,2 or 3.");
             break;
     }
     
@@ -62,18 +63,18 @@ void ShowMenu()
     Console.WriteLine("1: Generate random board");
     Console.WriteLine("2: Create board by user input");
     Console.WriteLine("3: Test verified board");
-    Console.Write("\n Your variant: ");
 
 }
 
 string UserInput()
 {
-    Console.WriteLine("Write numbers 1-9 separated by a space without repetitions. Number 9 means '*'.");
+    Console.WriteLine(
+        "Write numbers 1-9 separated by a space without repetitions. Number 9 means '*'.\n Example: 1 2 3 4 5 6 7 8 9");
     Console.Write("Your data: ");
     string? input = Console.ReadLine();
     while (!UserValidInput(input))
     {
-        Console.WriteLine("You wrote wrong data. Please write numbers 1-9 separated by a space without repetitions");
+        Console.WriteLine("You wrote wrong data. Please write numbers 1-9 separated by a space without repetitions.\n Example: 1 2 3 4 5 6 7 8 9");
         Console.Write("Your data: ");
         input = Console.ReadLine();
     }
@@ -139,7 +140,7 @@ void DoLDFSAlgo()
     int countOfState;
     Console.Write("Choose limit for LDFS: ");
     int limit = Int32.Parse(Console.ReadLine()!);
-    Console.WriteLine("Algorithm started.");
+    Console.WriteLine("Algorithm started. Please wait...");
     State? state = LDFS.Solve(beginState,limit,out iterations,out angles,out countOfState);
     if (state != null)
     {
