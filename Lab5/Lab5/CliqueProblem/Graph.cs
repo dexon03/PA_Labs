@@ -36,6 +36,14 @@ public class Graph
         }
     }
 
+    public void Append(Node node)
+    {
+        Nodes.Add(node);
+        foreach (var nodeConnection in node.Connections)
+        {
+           nodeConnection.Connections.Add(node); 
+        }
+    } 
     public bool isClique()
     {
         foreach (var node in Nodes)
