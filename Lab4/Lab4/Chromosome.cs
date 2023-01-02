@@ -1,0 +1,50 @@
+﻿namespace Lab4
+{
+    public class Chromosome
+    {
+        public List<int> Gene { get; set; }
+
+        public Chromosome()
+        {
+            Gene = new List<int>(100);
+            for (int i = 0; i < Gene.Capacity; i++)
+            {
+                Gene.Add(0);
+            }
+        }
+
+        public Chromosome(List<int> gene)
+        {
+            Gene = new List<int>();
+            Gene.AddRange(gene);
+        }
+
+        public int GetWeight() 
+        { 
+                int result = 0;
+                for (int i = 0; i < Gene.Count; i++)
+                {
+                    if (Gene[i] == 1)
+                    {
+                        result += Solver.backPack.Items[i].Weight;
+                    }
+                }
+                return result;
+        }
+
+
+        public int GetValue()
+        {
+                int result = 0;
+                for (int i = 0; i < Gene.Count; i++)
+                {
+                    if (Gene[i] == 1)
+                    {
+                        result += Solver.backPack.Items[i].Value;
+                    }
+                }
+                return result;
+        }
+
+    }
+}
