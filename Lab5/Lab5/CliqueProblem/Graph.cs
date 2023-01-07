@@ -2,37 +2,32 @@
 
 public class Graph
 {
-    public List<Node> Nodes { get; } = new List<Node>();
+    public HashSet<Node> Nodes { get; }
 
-    public Graph(int count, int NodeDegreeCount)
+    public Graph(int NodeCount, int NodeDegree)
     {
-        Nodes = new List<Node>(count);
-        for (int i = 0; i < count; i++)
+        Nodes = new HashSet<Node>(NodeCount);
+        for (int i = 0; i < NodeCount; i++)
         {
             Nodes.Add(new Node(i));
         }
-        GenerateConnections(NodeDegreeCount);
+        GenerateConnections(NodeDegree);
+        
     }
 
     private void GenerateConnections(int NodeDegreeCount)
     {
-        var avgNodeDegree = NodeDegreeCount / 2;
-        var avgEdgeCount = avgNodeDegree * Nodes.Count;
-        
-        int counter = 0;
-        Random random = new Random();
-        while (counter < avgEdgeCount)
+        foreach (var node in Nodes)
         {
-            var node1 = Nodes[random.Next(Nodes.Count)];
-            var node2 = Nodes[random.Next(Nodes.Count)];
-            
-            if (node1 == node2)
-                continue;
-            if (!node1.IsConnected(node2))
+            var nodeDegree = new Random().Next(1, NodeDegreeCount);
+            for (int i = 0; i < nodeDegree; i++)
             {
-                node1.Connect(node2);
+                var randomNode = Nodes.ElementAt(new Random().Next(0, Nodes.Count));
+                if (randomNode != node)
+                {
+                    node.Connect(randomNode);
+                }
             }
-            counter++;
         }
     }
 

@@ -3,7 +3,7 @@
 public class Node
 {
     public int Id { get; set; }
-    public List<Node> Connections { get; set; }
+    public HashSet<Node> Connections { get; set; }
 
     public Node(int id)
     {
@@ -19,5 +19,10 @@ public class Node
     {
         Connections.Add(node);
         node.Connections.Add(this);
+    }
+
+    public override string ToString()
+    {
+        return "Node " + Id;
     }
 }
