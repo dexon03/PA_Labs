@@ -2,8 +2,8 @@
 
 public class Node
 {
-    public int Id { get; set; }
-    public HashSet<Node> Connections { get; set; }
+    public int Id { get; }
+    public HashSet<Node> Connections { get; set; } = new();
 
     public Node(int id)
     {
