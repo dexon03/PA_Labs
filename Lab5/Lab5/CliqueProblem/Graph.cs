@@ -21,7 +21,7 @@ public class Graph
     {
         foreach (var node in Nodes)
         {
-            var nodeDegree = new Random().Next(2, NodeDegree);
+            var nodeDegree = new Random().Next(2, NodeDegree+1);
             for (int i = 0; i < nodeDegree; i++)
             {
                 var randomNode = Nodes.ElementAt(new Random().Next(0, Nodes.Count));

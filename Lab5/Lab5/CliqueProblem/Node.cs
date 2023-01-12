@@ -23,6 +23,6 @@ public class Node
 
     public override string ToString()
     {
-        return "Node " + Id;
+        return "Node: " + Id;
     }
 }

@@ -6,8 +6,8 @@ public class BeeAlgorithm
 {
     private int ForagersCount { get; }
     private int ScoutsCount { get; }
-    private int MaxIterations { get; } = 1000;
-    private int EliteBeesCount { get; set; } = 10;
+    private int MaxIterations = 1000;
+    private int EliteBeesCount { get; set; }
     private Graph Graph { get; }
 
     private List<Bee> ForagerBees { get; }
@@ -18,31 +18,35 @@ public class BeeAlgorithm
         ForagersCount = foragers;
         ScoutsCount = scouts;
         Graph = graph;
-        
+        EliteBeesCount = (ForagersCount + ScoutsCount) / 10;
         ForagerBees = new List<Bee>(ForagersCount);
         ScoutBees = new List<Bee>(ScoutsCount);
         
         InitializeBees();
     }
     
-    public void Solve()
+    public List<Bee> Solve()
     {
+        List<Bee> BestSolutions = new List<Bee>();
+        
         for (int i = 0; i < MaxIterations; i++)
         {
             foreach (var scout in ScoutBees)
             {
                 scout.GenerateRandomSolution();
             }
-
+            
             var EliteBees = GetBestSolutions();
+        
             for (int j = 0; j < ForagersCount; j++)
             {
-                ForagerBees[j].ModifySolution(EliteBees[j % EliteBeesCount].nodes);
+                ForagerBees[j].ExploreNeighbourhood(EliteBees[j % EliteBeesCount].Nodes);
             }
-            replaceWorstSolution(EliteBees);
+            ReplaceWorstSolution(EliteBees);
             var bestSolution = GetBestSolutions().First();
-            Console.WriteLine($"Iteration {i} best solution: {bestSolution.nodes.Count} nodes, {bestSolution.Fitness} fitness");
+            BestSolutions.Add(bestSolution);
         }
+        return BestSolutions;
     }
 
     
@@ -52,14 +56,17 @@ public class BeeAlgorithm
         return UnitedBees.OrderByDescending(u => u.Fitness).Take(EliteBeesCount).ToList();
     }
     
-    private void replaceWorstSolution(List<Bee> eliteBees)
+    private void ReplaceWorstSolution(List<Bee> eliteBees)
     {
         var orderedForagers = ForagerBees.OrderBy(u => u.Fitness).ToList();
         ForagerBees.Clear();
         ForagerBees.AddRange(orderedForagers);
         for (int i = 0; i < EliteBeesCount; i++)
         {
-            ForagerBees[i] = eliteBees[i];
+            if(ForagerBees[i].Fitness < eliteBees[i].Fitness)
+            {
+                ForagerBees[i] = eliteBees[i];
+            }
         }        
         
     }
@@ -76,5 +83,5 @@ public class BeeAlgorithm
             ScoutBees.Add(new Bee(Graph));
         }
     }
-    
+
 }
